@@ -13,13 +13,15 @@ class WeatherViewController: UIViewController {
     @IBOutlet weak var collectionView: UICollectionView!
     @IBOutlet weak var imageView: UIImageView!
     
+    @IBOutlet weak var cityNameLabel: UILabel!
+    @IBOutlet weak var temperatureLabel: UILabel!
+    @IBOutlet weak var weatherDescriptionLabel: UILabel!
+    
+    private var currentIndex = 0
     
     private var viewModel: WeatherViewModelProtocol! {
         didSet {
-            viewModel.fetchWeatherData {
-                self.tableView.reloadData()
-                self.collectionView.reloadData()
-            }
+            fetchData()
         }
     }
     
@@ -29,38 +31,80 @@ class WeatherViewController: UIViewController {
     }
 
     @IBAction func updateButtonPressed() {
-
+        fetchData()
+    }
+    
+    private func fetchData() {
+        viewModel.fetchWeatherData {
+            self.tableView.reloadData()
+            self.collectionView.reloadData()
+            self.cityNameLabel.text = self.viewModel.weatherData?.cityName
+            self.setLabels()
+        }
+    }
+    
+    private func setImage(with iconName: String) {
+        imageView.image = UIImage(named: iconName)
+    }
+    
+    private func setLabels(at index: Int = 0) {
+        weatherDescriptionLabel.text = viewModel.weatherData?.fiveDayWeather.daysWeather[currentIndex].hoursWeather[index].description
+        temperatureLabel.text = viewModel.weatherData.fiveDayWeather.daysWeather[currentIndex].hoursWeather[index].temperature
     }
 }
 
 extension WeatherViewController: UITableViewDataSource, UITableViewDelegate {
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        viewModel.numberOfTableViewRows()
-    }
-    
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "tableViewCell", for: indexPath)
+        let cell = tableView.dequeueReusableCell(withIdentifier: "tableViewCell", for: indexPath) as! WeatherTableViewCell
+        cell.viewModel = WeatherTableViewModel(with: viewModel.weatherData.fiveDayWeather.daysWeather[indexPath.item])
         return cell
     }
     
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        viewModel.numberOfTableViewRows()
+    }
+        
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         let numberOfRows = viewModel.numberOfTableViewRows()
         return tableView.frame.height / CGFloat(numberOfRows)
     }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        currentIndex = indexPath.item
+        setLabels()
+        collectionView.reloadData()
+    }
 }
 
 extension WeatherViewController: UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        viewModel.numberOfCollectionViewRows()
-    }
-    
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "collectionViewCell", for: indexPath)
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "collectionViewCell", for: indexPath) as! WeatherCollectionViewCell
+        
+        let cellViewModel = CollectionViewCellViewModel(with: viewModel.weatherData.fiveDayWeather.daysWeather[currentIndex].hoursWeather[indexPath.item])
+        
+        cell.viewModel = cellViewModel
+        
+        if indexPath.item == 0 {
+            collectionView.selectItem(at: indexPath, animated: true, scrollPosition: .left)
+            cell.isSelected = true
+            setImage(with: cell.viewModel.iconName)
+        }
+        
         return cell
     }
     
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        viewModel.numberOfCollectionViewRows(at: currentIndex)
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let cell = collectionView.cellForItem(at: indexPath) as! WeatherCollectionViewCell
+        setImage(with: cell.viewModel.iconName)
+        setLabels(at: indexPath.item)
+    }
+    
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        let numberOfRows = viewModel.numberOfCollectionViewRows()
+        let numberOfRows = viewModel.numberOfCollectionViewRows(at: currentIndex)
         return CGSize(width: collectionView.layer.frame.width / CGFloat(numberOfRows), height: collectionView.layer.frame.height)
     }
     

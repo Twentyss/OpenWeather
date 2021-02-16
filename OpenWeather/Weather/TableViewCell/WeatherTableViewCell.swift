@@ -8,16 +8,19 @@
 import UIKit
 
 class WeatherTableViewCell: UITableViewCell {
-
-    override func awakeFromNib() {
-        super.awakeFromNib()
-        // Initialization code
+    
+    
+    @IBOutlet weak var weakDayLabel: UILabel!
+    @IBOutlet weak var dateLabel: UILabel!
+    @IBOutlet weak var temperatureLabel: UILabel!
+    @IBOutlet weak var weatherIcon: UIImageView!
+    
+    var viewModel: WeatherTableViewCellViewModelProtocol! {
+        didSet {
+            dateLabel.text = viewModel.date
+            weakDayLabel.text = viewModel.weekDay
+            temperatureLabel.text = viewModel.temperature
+            weatherIcon.image = UIImage(systemName: viewModel.iconName)
+        }
     }
-
-    override func setSelected(_ selected: Bool, animated: Bool) {
-        super.setSelected(selected, animated: animated)
-
-        // Configure the view for the selected state
-    }
-
 }

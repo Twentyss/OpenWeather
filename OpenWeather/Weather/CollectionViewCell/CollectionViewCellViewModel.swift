@@ -6,3 +6,30 @@
 //
 
 import Foundation
+
+protocol CollectionViewCellViewModelProtocol {
+    var iconName: String { get }
+    var selectedIconName: String { get }
+    var hour: String { get }
+    init (with hourWeather: Weather)
+}
+
+class CollectionViewCellViewModel: CollectionViewCellViewModelProtocol {
+    var iconName: String {
+        ImageService.shared.getSystemIconName(with:  hourWeather.iconName ?? "" )
+    }
+    
+    var selectedIconName: String {
+        iconName + ".fill"
+    }
+    
+    var hour: String {
+        hourWeather.time ?? ""
+    }
+
+    private let hourWeather: Weather!
+    
+    required init(with hourWeather: Weather) {
+        self.hourWeather = hourWeather
+    }
+}

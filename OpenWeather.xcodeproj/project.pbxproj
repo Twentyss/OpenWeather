@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		091AB7D825D59731008081D2 /* NetworkService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 091AB7D725D59731008081D2 /* NetworkService.swift */; };
+		09BB143E25D95394007F9109 /* ConvertService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09BB143D25D95393007F9109 /* ConvertService.swift */; };
+		09BB144125D95AC1007F9109 /* ImageService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09BB144025D95AC1007F9109 /* ImageService.swift */; };
 		09C0209525D59FC100AD98D2 /* NetworkFetcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09C0209425D59FC100AD98D2 /* NetworkFetcher.swift */; };
 		09C06C9325D44AAA003D7D49 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09C06C9225D44AAA003D7D49 /* AppDelegate.swift */; };
 		09C06C9525D44AAA003D7D49 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09C06C9425D44AAA003D7D49 /* SceneDelegate.swift */; };
@@ -26,6 +28,8 @@
 
 /* Begin PBXFileReference section */
 		091AB7D725D59731008081D2 /* NetworkService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkService.swift; sourceTree = "<group>"; };
+		09BB143D25D95393007F9109 /* ConvertService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConvertService.swift; sourceTree = "<group>"; };
+		09BB144025D95AC1007F9109 /* ImageService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageService.swift; sourceTree = "<group>"; };
 		09C0209425D59FC100AD98D2 /* NetworkFetcher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkFetcher.swift; sourceTree = "<group>"; };
 		09C06C8F25D44AAA003D7D49 /* OpenWeather.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = OpenWeather.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		09C06C9225D44AAA003D7D49 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -63,6 +67,8 @@
 			children = (
 				091AB7D725D59731008081D2 /* NetworkService.swift */,
 				09C0209425D59FC100AD98D2 /* NetworkFetcher.swift */,
+				09BB143D25D95393007F9109 /* ConvertService.swift */,
+				09BB144025D95AC1007F9109 /* ImageService.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -290,8 +296,10 @@
 				09C06C9725D44AAA003D7D49 /* WeatherViewController.swift in Sources */,
 				09C06C9325D44AAA003D7D49 /* AppDelegate.swift in Sources */,
 				09C06CBD25D487AA003D7D49 /* WeatherCollectionViewCell.swift in Sources */,
+				09BB143E25D95394007F9109 /* ConvertService.swift in Sources */,
 				09C06CBA25D48783003D7D49 /* WeatherTableViewCell.swift in Sources */,
 				09C06C9525D44AAA003D7D49 /* SceneDelegate.swift in Sources */,
+				09BB144125D95AC1007F9109 /* ImageService.swift in Sources */,
 				09C06CC325D48857003D7D49 /* TableViewCellViewModel.swift in Sources */,
 				09C0209525D59FC100AD98D2 /* NetworkFetcher.swift in Sources */,
 				091AB7D825D59731008081D2 /* NetworkService.swift in Sources */,

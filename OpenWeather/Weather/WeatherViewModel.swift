@@ -8,22 +8,14 @@
 import Foundation
 
 protocol WeatherViewModelProtocol: class {
-    var imageData: Data? { get }
-    var weatherData: WeatherData? { get }
-    
+    var weatherData: WeatherData! { get }
     func fetchWeatherData(completion: @escaping() -> Void)
     func numberOfTableViewRows() -> Int
-    func numberOfCollectionViewRows() -> Int 
+    func numberOfCollectionViewRows(at index: Int) -> Int
 }
 
 class WeatherViewModel: WeatherViewModelProtocol {
-    var weatherData: WeatherData?
-    
-    var imageData: Data? {
-        nil // Will return image data 
-    }
-    
-    var viewModelDidChange: ((WeatherViewModelProtocol) -> Void)?
+    var weatherData: WeatherData!
     
     func fetchWeatherData(completion: @escaping () -> Void) {
         NetworkFetcher.shared.fetchWeatherData { [unowned self] (weatherData) in
@@ -34,10 +26,10 @@ class WeatherViewModel: WeatherViewModelProtocol {
     }
     
     func numberOfTableViewRows() -> Int {
-        weatherData?.fiveDayWeather?.daysWeather?.count ?? 0 // TODO: 1
+        weatherData?.fiveDayWeather.daysWeather.count ?? 0 
     }
     
-    func numberOfCollectionViewRows() -> Int {
-        weatherData?.fiveDayWeather?.daysWeather?.first?.hoursWeather?.count ?? 0 // TODO: 2
+    func numberOfCollectionViewRows(at index: Int) -> Int {
+        weatherData?.fiveDayWeather.daysWeather[index].hoursWeather.count ?? 0
     }
 }
