@@ -9,10 +9,7 @@ import Foundation
 import Alamofire
 
 class ImageService {
-    static let shared = ImageService()
-    private init() {}
-        
-    func getSystemIconName(with iconName: String) -> String {
+    static func getImageName(with iconName: String) -> String {
         switch iconName {
         case "01d", "01n": return "sun.min"
         case "02d", "02n": return "cloud.sun"
@@ -26,6 +23,5 @@ class ImageService {
         default:
             return "cloud"
         }
-        
     }
 }

@@ -8,18 +8,17 @@
 import Foundation
 
 protocol WeatherViewModelProtocol: class {
-    var weatherData: WeatherData! { get }
+    var weatherData: WeatherData? { get }
     func fetchWeatherData(completion: @escaping() -> Void)
     func numberOfTableViewRows() -> Int
     func numberOfCollectionViewRows(at index: Int) -> Int
 }
 
 class WeatherViewModel: WeatherViewModelProtocol {
-    var weatherData: WeatherData!
+    var weatherData: WeatherData?
     
     func fetchWeatherData(completion: @escaping () -> Void) {
-        NetworkFetcher.shared.fetchWeatherData { [unowned self] (weatherData) in
-            guard let weatherData = weatherData else { return }
+        NetworkService.shared.fetchWeatherData { [unowned self] (weatherData) in
             self.weatherData = weatherData
             completion()
         }

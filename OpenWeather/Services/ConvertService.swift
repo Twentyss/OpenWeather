@@ -8,16 +8,13 @@
 import Foundation
 
 class ConvertService {
-    static let shared = ConvertService()
-    private init() { }
-    
-    func formatTime(with timeString: String) -> String {
+    static func formatTime(with timeString: String) -> String {
         let time = timeString.split(separator: ":")
         let formatedTime = String(time.first ?? "")
         return formatedTime
     }
     
-    func formatDate(with dateString: String) -> String {
+    static func formatDate(with dateString: String) -> String {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "yyyy-MM-dd"
         guard let date = dateFormatter.date(from: dateString) else { return "" }
@@ -27,7 +24,7 @@ class ConvertService {
         return formatedDate
     }
     
-    func convertDateToWeekDay(with dateString: String) -> String {
+    static func convertDateToWeekDay(with dateString: String) -> String {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "dd.MM.yyyy"
         guard let date = dateFormatter.date(from: dateString) else { return "" }
@@ -37,7 +34,10 @@ class ConvertService {
         return weekDay
     }
     
-    func convertKelvinToCelsius(kelvin: Double) -> String {
+    static func convertKelvinToCelsius(kelvin: Double) -> String {
         String(Int(kelvin - 273.15)) + "°"
     }
 }
+
+
+

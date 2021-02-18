@@ -17,7 +17,7 @@ protocol WeatherTableViewCellViewModelProtocol {
 
 class WeatherTableViewModel: WeatherTableViewCellViewModelProtocol {
     var iconName: String {
-        ImageService.shared.getSystemIconName(with: dayWeather.hoursWeather.first?.iconName ?? "")
+        ImageService.getImageName(with: dayWeather.hoursWeather.first?.iconName ?? "")
     }
     
     var date: String {

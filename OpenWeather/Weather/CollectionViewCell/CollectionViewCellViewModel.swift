@@ -16,7 +16,7 @@ protocol CollectionViewCellViewModelProtocol {
 
 class CollectionViewCellViewModel: CollectionViewCellViewModelProtocol {
     var iconName: String {
-        ImageService.shared.getSystemIconName(with:  hourWeather.iconName ?? "" )
+        ImageService.getImageName(with:  hourWeather.iconName ?? "" )
     }
     
     var selectedIconName: String {
@@ -27,7 +27,7 @@ class CollectionViewCellViewModel: CollectionViewCellViewModelProtocol {
         hourWeather.time ?? ""
     }
 
-    private let hourWeather: Weather!
+    private let hourWeather: Weather
     
     required init(with hourWeather: Weather) {
         self.hourWeather = hourWeather

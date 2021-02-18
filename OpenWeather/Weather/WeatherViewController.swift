@@ -35,12 +35,23 @@ class WeatherViewController: UIViewController {
     }
     
     private func fetchData() {
-        viewModel.fetchWeatherData {
-            self.tableView.reloadData()
-            self.collectionView.reloadData()
-            self.cityNameLabel.text = self.viewModel.weatherData?.cityName
-            self.setLabels()
+        viewModel.fetchWeatherData { [unowned self] in 
+            if self.viewModel.weatherData != nil {
+                self.cityNameLabel.text = self.viewModel.weatherData?.cityName
+                self.setLabels()
+                self.tableView.reloadData()
+                self.collectionView.reloadData()
+            } else {
+                self.showErrorAlert()
+            }
         }
+    }
+    
+    private func showErrorAlert() {
+        let alert = UIAlertController(title: "Update error", message: "Сheck your internet connection", preferredStyle: .alert)
+        let okAction = UIAlertAction(title: "OK", style: .default)
+        alert.addAction(okAction)
+        present(alert, animated: true)
     }
     
     private func setImage(with iconName: String) {
@@ -48,15 +59,26 @@ class WeatherViewController: UIViewController {
     }
     
     private func setLabels(at index: Int = 0) {
-        weatherDescriptionLabel.text = viewModel.weatherData?.fiveDayWeather.daysWeather[currentIndex].hoursWeather[index].description
-        temperatureLabel.text = viewModel.weatherData.fiveDayWeather.daysWeather[currentIndex].hoursWeather[index].temperature
+        weatherDescriptionLabel.text =
+            viewModel.weatherData?
+            .fiveDayWeather.daysWeather[currentIndex]
+            .hoursWeather[index].description
+        
+        temperatureLabel.text =
+            viewModel.weatherData?
+            .fiveDayWeather.daysWeather[currentIndex]
+            .hoursWeather[index].temperature
     }
 }
 
 extension WeatherViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "tableViewCell", for: indexPath) as! WeatherTableViewCell
-        cell.viewModel = WeatherTableViewModel(with: viewModel.weatherData.fiveDayWeather.daysWeather[indexPath.item])
+        
+        if viewModel.weatherData != nil {
+            cell.viewModel = WeatherTableViewModel(with: (viewModel.weatherData?.fiveDayWeather.daysWeather[indexPath.item])!)
+        }
+        
         return cell
     }
     
@@ -80,14 +102,16 @@ extension WeatherViewController: UICollectionViewDataSource, UICollectionViewDel
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "collectionViewCell", for: indexPath) as! WeatherCollectionViewCell
         
-        let cellViewModel = CollectionViewCellViewModel(with: viewModel.weatherData.fiveDayWeather.daysWeather[currentIndex].hoursWeather[indexPath.item])
-        
-        cell.viewModel = cellViewModel
-        
-        if indexPath.item == 0 {
-            collectionView.selectItem(at: indexPath, animated: true, scrollPosition: .left)
-            cell.isSelected = true
-            setImage(with: cell.viewModel.iconName)
+        if viewModel.weatherData != nil {
+            let cellViewModel = CollectionViewCellViewModel(with: (viewModel.weatherData?.fiveDayWeather.daysWeather[currentIndex].hoursWeather[indexPath.item])!)
+            
+            cell.viewModel = cellViewModel
+            
+            if indexPath.item == 0 {
+                collectionView.selectItem(at: indexPath, animated: true, scrollPosition: .left)
+                cell.isSelected = true
+                setImage(with: cell.viewModel.iconName)
+            }
         }
         
         return cell
